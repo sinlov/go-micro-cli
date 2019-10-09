@@ -76,7 +76,7 @@ dockerStopContainWhenRunning(){
         if [ "running" == ${c_status} ]; then
             pD "-> docker stop contain [ $1 ]"
             docker stop $1
-            # checkFuncBack "docker stop $1"
+            checkFuncBack "docker stop $1"
         fi
     fi
 }
@@ -129,7 +129,10 @@ ENTRYPOINT ["tail",  "-f", "/etc/alpine-release"]
 EOF
 
 GOPROXY=${go_proxy_url} GO111MODULE=on go mod vendor
+
 docker build -t ${docker_temp_name}:${dpcler_temp_tag} .
+checkFuncBack "docker build -t ${docker_temp_name}:${dpcler_temp_tag} ."
+
 
 dockerRemoveContainSafe ${docker_temp_contain}
 docker create --name ${docker_temp_contain} ${docker_temp_name}:${dpcler_temp_tag}
