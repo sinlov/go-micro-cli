@@ -23,6 +23,9 @@ cleanLog:
 cleanDist:
 	@if [ -d ${ROOT_DIST} ]; then rm -rf ${ROOT_DIST} && echo "~> cleaned ${ROOT_DIST}"; else echo "~> has cleaned ${ROOT_DIST}"; fi
 
+dockerCleanImages:
+	(while :; do echo 'y'; sleep 3; done) | docker image prune
+
 clean: cleanBuild cleanLog
 	@echo "~> clean finish"
 
