@@ -8,6 +8,6 @@ RUN apk --no-cache add ca-certificates && \
     rm -rf /var/cache/apk/* /tmp/*
 
 WORKDIR /
-COPY ./micro /micro
+COPY latest/micro /
 
 ENTRYPOINT [ "/micro" ]
