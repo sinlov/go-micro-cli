@@ -35,7 +35,7 @@ buildLatestAlpine: checkBuildPath
 	cd dist && bash build-alpine.sh
 
 buildTag:
-	cd dist/$(ROOT_SWITCH_TAG) && bash build-alpine.sh
+	cd dist/$(ROOT_SWITCH_TAG) && bash build-tag.sh
 
 help:
 	@echo "make all ~> fast build"

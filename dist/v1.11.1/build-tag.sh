@@ -4,14 +4,14 @@ build_version=v1.11.1
 build_os=alpine
 build_out_path=../../${build_version}/${build_os}
 
-build_source_root=../build/micro
+build_source_root=../../build/micro
 go_proxy_url=https://goproxy.io/
 
 docker_temp_contain=temp-go-micro-cli
 docker_temp_name=temp-micro/go-micro-cli
 docker_temp_tag=${build_version}
 docker_cp_from=/micro
-docker_cp_to=${build_out_path}
+docker_cp_to=../${build_version}/${build_os}
 
 
 run_path=$(pwd)
@@ -117,7 +117,9 @@ else
 fi
 
 git checkout ${build_version}
-checkFuncBack "git checkout ${build_version}"
+checkFuncBack "git checkout -b ${build_version} ${build_version}"
+echo "git commit code is:"
+git rev-parse HEAD
 
 cat > Dockerfile << EOF
 FROM golang:1.13-alpine as builder
@@ -135,7 +137,8 @@ COPY --from=builder /micro .
 ENTRYPOINT ["tail",  "-f", "/etc/alpine-release"]
 EOF
 
-GOPROXY=${go_proxy_url} GO111MODULE=on go mod vendor
+exit 0
+#GOPROXY=${go_proxy_url} GO111MODULE=on go mod vendor
 
 docker build --tag ${docker_temp_name}:${docker_temp_tag} .
 checkFuncBack "docker build --tag ${docker_temp_name}:${docker_temp_tag} ."

@@ -107,10 +107,13 @@ if [[ -d "${build_source_root}" ]]; then
   cd ${build_source_root}
   git reset --hard HEAD
   git pull
+  git checkout master
 else
   git clone https://github.com/micro/micro.git ${build_source_root}
   cd ${build_source_root}
 fi
+echo "git commit code is:"
+git rev-parse HEAD
 
 cat > Dockerfile << EOF
 FROM golang:1.13-alpine as builder
@@ -128,7 +131,8 @@ COPY --from=builder /micro .
 ENTRYPOINT ["tail",  "-f", "/etc/alpine-release"]
 EOF
 
-GOPROXY=${go_proxy_url} GO111MODULE=on go mod vendor
+exit 0
+#GOPROXY=${go_proxy_url} GO111MODULE=on go mod vendor
 
 docker build --tag ${docker_temp_name}:${docker_temp_tag} .
 checkFuncBack "docker build --tag ${docker_temp_name}:${docker_temp_tag} ."
