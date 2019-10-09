@@ -4,7 +4,7 @@ build_source_root=../build/micro
 go_proxy_url=https://goproxy.io/
 
 docker_temp_contain=temp-go-micro-cli
-docker_temp_name=temp_micro_go_micro_cli
+docker_temp_name=temp-micro/go-micro-cli
 docker_temp_tag=lastest
 docker_cp_from=/micro
 docker_cp_to=../../lastest/alpine
@@ -130,14 +130,14 @@ EOF
 
 GOPROXY=${go_proxy_url} GO111MODULE=on go mod vendor
 
-docker build --tag ${docker_temp_name}:${dpcler_temp_tag} .
-checkFuncBack "docker build --tag ${docker_temp_name}:${dpcler_temp_tag} ."
+docker build --tag ${docker_temp_name}:${docker_temp_tag} .
+checkFuncBack "docker build --tag ${docker_temp_name}:${docker_temp_tag} ."
 
 
 dockerRemoveContainSafe ${docker_temp_contain}
-docker create --name ${docker_temp_contain} ${docker_temp_name}:${dpcler_temp_tag}
+docker create --name ${docker_temp_contain} ${docker_temp_name}:${docker_temp_tag}
 docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}
 dockerRemoveContainSafe ${docker_temp_contain}
-docker rmi -f ${docker_temp_name}:${dpcler_temp_tag}
+docker rmi -f ${docker_temp_name}:${docker_temp_tag}
 
 (while :; do echo 'y'; sleep 3; done) | docker image prune
