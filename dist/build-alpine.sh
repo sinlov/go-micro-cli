@@ -94,6 +94,11 @@ dockerRemoveContainSafe(){
                 docker rm $1
                 checkFuncBack "docker rm $1"
             fi
+            if [ "created" ==  ${c_status} ]; then
+                pD "-> docker rm contain [ $1 ]"
+                docker rm $1
+                checkFuncBack "docker rm $1"
+            fi
         else
             pE "dockerRemoveContainSafe Not found contain [ $1 ]"
         fi
@@ -139,7 +144,10 @@ checkFuncBack "docker build --tag ${docker_temp_name}:${docker_temp_tag} ."
 
 dockerRemoveContainSafe ${docker_temp_contain}
 docker create --name ${docker_temp_contain} ${docker_temp_name}:${docker_temp_tag}
+checkFuncBack "docker create --name ${docker_temp_contain} ${docker_temp_name}:${docker_temp_tag}"
 docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}
+checkFuncBack "docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}"
+
 dockerRemoveContainSafe ${docker_temp_contain}
 docker rmi -f ${docker_temp_name}:${docker_temp_tag}
 
