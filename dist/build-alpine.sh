@@ -131,7 +131,6 @@ COPY --from=builder /micro .
 ENTRYPOINT ["tail",  "-f", "/etc/alpine-release"]
 EOF
 
-exit 0
 #GOPROXY=${go_proxy_url} GO111MODULE=on go mod vendor
 
 docker build --tag ${docker_temp_name}:${docker_temp_tag} .
