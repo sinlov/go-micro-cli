@@ -4,7 +4,7 @@ build_source_root=../build/micro
 go_proxy_url=https://goproxy.io/
 
 docker_temp_contain=temp-go-micro-cli
-docker_temp_name=temp-micro-go-micro-cli
+docker_temp_name=temp_micro_go_micro_cli
 docker_temp_tag=lastest
 docker_cp_from=/micro
 docker_cp_to=../../lastest/alpine
@@ -130,8 +130,8 @@ EOF
 
 GOPROXY=${go_proxy_url} GO111MODULE=on go mod vendor
 
-docker build -t ${docker_temp_name}:${dpcler_temp_tag} .
-checkFuncBack "docker build -t ${docker_temp_name}:${dpcler_temp_tag} ."
+docker build --tag ${docker_temp_name}:${dpcler_temp_tag} .
+checkFuncBack "docker build --tag ${docker_temp_name}:${dpcler_temp_tag} ."
 
 
 dockerRemoveContainSafe ${docker_temp_contain}
