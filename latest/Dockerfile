@@ -3,6 +3,9 @@
 # Author: sinlov
 # dockerfile offical document https://docs.docker.com/engine/reference/builder/
 FROM alpine:3.10
+#RUN apk --no-cache add make git gcc libtool musl-dev
+RUN apk --no-cache add ca-certificates && \
+    rm -rf /var/cache/apk/* /tmp/*
 
 ADD ../dist/micro/last/micro /micro
 
