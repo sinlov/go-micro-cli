@@ -11,7 +11,7 @@ docker_temp_contain=temp-go-micro-cli
 docker_temp_name=temp-micro/go-micro-cli
 docker_temp_tag=${build_version}
 docker_cp_from=/micro
-docker_cp_to=../${build_version}/${build_os}
+docker_cp_to=../../${build_version}/${build_os}
 
 
 run_path=$(pwd)
@@ -166,6 +166,8 @@ cat ${build_out_path}/Dockerfile
 dockerRemoveContainSafe ${docker_temp_contain}
 docker create --name ${docker_temp_contain} ${docker_temp_name}:${docker_temp_tag}
 docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}
+checkFuncBack "docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}"
+
 dockerRemoveContainSafe ${docker_temp_contain}
 docker rmi -f ${docker_temp_name}:${docker_temp_tag}
 
