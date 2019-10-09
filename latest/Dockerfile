@@ -7,7 +7,7 @@ FROM alpine:3.10
 RUN apk --no-cache add ca-certificates && \
     rm -rf /var/cache/apk/* /tmp/*
 
-ADD ../dist/micro/last/micro /micro
-
 WORKDIR /
+COPY --from=builder ../dist/micro/last/micro /micro
+
 ENTRYPOINT [ "/micro" ]
