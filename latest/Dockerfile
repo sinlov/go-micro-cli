@@ -4,7 +4,7 @@
 # dockerfile offical document https://docs.docker.com/engine/reference/builder/
 FROM alpine:3.10
 
-ADD ../dist/last/micro /micro
+ADD ../dist/micro/last/micro /micro
 
 WORKDIR /
 ENTRYPOINT [ "/micro" ]
