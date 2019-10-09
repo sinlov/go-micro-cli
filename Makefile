@@ -2,6 +2,8 @@
 
 TOP_DIR := $(shell pwd)
 
+ROOT_SWITCH_TAG := v1.11.1
+
 ROOT_BUILD_PATH ?= ./build
 ROOT_LOG_PATH ?= ./log
 ROOT_DIST ?= ./out
@@ -32,9 +34,13 @@ clean: cleanBuild cleanLog
 buildLatestAlpine: checkBuildPath
 	cd dist && bash build-alpine.sh
 
+buildTag:
+	cd dist/$(ROOT_SWITCH_TAG) && bash build-alpine.sh
+
 help:
 	@echo "make all ~> fast build"
 	@echo ""
 	@echo "make clean - remove binary file and log files"
 	@echo ""
 	@echo "make buildLatestAlpine ~> build latest alpine"
+	@echo "make buildTag ~> build tag as $(ROOT_SWITCH_TAG) alpine"
