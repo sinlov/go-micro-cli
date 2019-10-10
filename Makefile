@@ -41,7 +41,7 @@ buildTag:
 	cd dist/$(ROOT_SWITCH_TAG) && bash build-tag.sh
 
 testTagBuild:
-	cd $(ROOT_SWITCH_TAG)/apline && docker build -t $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG) .
+	cd $(ROOT_SWITCH_TAG)/alpine && docker build -t $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG) .
 	docker run --rm --name $(TEST_TAG_BUILD_CONTAINER_NAME) $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG) --help
 
 testRemoveTagBuild:
