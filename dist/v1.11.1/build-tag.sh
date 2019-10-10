@@ -246,6 +246,13 @@ checkFuncBack "docker create --name ${docker_temp_contain} ${docker_temp_name}:$
 docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}
 checkFuncBack "docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}"
 
+# clean local container and images abs
+
+# dockerRemoveContainSafe ${docker_temp_contain}
+# docker rmi -f ${docker_temp_name}:${docker_temp_tag}
+# (while :; do echo 'y'; sleep 3; done) | docker container prune
+# (while :; do echo 'y'; sleep 3; done) | docker image prune
+
 # clean local container and images
 read -t 7 -p "Are you sure to remove container? [y/n] " remove_container_input
 case $remove_container_input in
