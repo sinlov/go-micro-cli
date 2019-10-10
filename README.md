@@ -14,10 +14,10 @@ docker run --rm \
 
 # use as local cli
 
-- version v1.11.1
+- version latest micro
 
 ```sh
-$ sudo curl -s -L --fail https://raw.githubusercontent.com/sinlov/go-micro-cli/master/v1.11.1/alpine/run.sh -o /usr/local/bin/micro
+$ sudo curl -s -L --fail https://raw.githubusercontent.com/sinlov/go-micro-cli/master/run.sh -o /usr/local/bin/micro
 $ sudo chmod +x /usr/local/bin/micro
 ```
 

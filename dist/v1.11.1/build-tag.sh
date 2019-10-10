@@ -157,6 +157,7 @@ if [[ ! -d ${build_out_path} ]]; then
 fi
 
 # start dist hub.docker
+# Dockerfile
 echo -e "# This dockerfile uses extends image https://hub.docker.com/sinlov/go-micro-cli
 # VERSION 1
 # Author: sinlov
@@ -173,6 +174,36 @@ ENTRYPOINT [ "/micro" ]
 
 pI "new tag ${build_version} Dockfile as =="
 cat ${build_out_path}/Dockerfile
+
+# README.md
+echo -e "# What is go-micro-cli
+
+docker hub see https://hub.docker.com/r/sinlov/go-micro-cli
+this is fast way to run https://github.com/micro/micro cli under micro
+
+# fast use
+
+\`\`\`sh
+docker run --rm \\
+  --name micro-alpine \\
+  -it sinlov/go-micro-cli:${build_version} \\
+  --help
+\`\`\`
+
+# use as local cli
+
+- version ${build_version}
+
+\`\`\`sh
+$ sudo curl -s -L --fail https://raw.githubusercontent.com/sinlov/go-micro-cli/master/${build_version}/alpine/run.sh -o /usr/local/bin/micro
+$ sudo chmod +x /usr/local/bin/micro
+\`\`\`
+
+# micro
+
+source https://github.com/micro/micro
+document https://micro.mu/docs/
+" > ${build_out_path}/README.md
 
 dockerRemoveContainSafe ${docker_temp_contain}
 
