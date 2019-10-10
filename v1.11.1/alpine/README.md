@@ -1,7 +1,7 @@
 # What is go-micro-cli
 
-docker hub see https://hub.docker.com/r/sinlov/go-micro-cli
-this is fast way to run https://github.com/micro/micro cli under micro
+- docker hub see https://hub.docker.com/r/sinlov/go-micro-cli
+- this is fast way to run https://github.com/micro/micro cli under micro
 
 # fast use
 
