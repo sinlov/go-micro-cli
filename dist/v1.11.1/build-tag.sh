@@ -109,9 +109,11 @@ dockerRemoveContainSafe(){
     fi
 }
 
+# checkenv
 checkBinary git
 checkBinary docker
 
+# pull https://github.com/micro/micro with tag start
 if [[ -d "${build_source_root}" ]]; then
   cd ${build_source_root}
   git reset --hard HEAD
@@ -125,7 +127,9 @@ git checkout ${build_version}
 checkFuncBack "git checkout -b ${build_version} ${build_version}"
 echo "git commit code is:"
 git rev-parse HEAD
+# pull https://github.com/micro/micro with tag end
 
+# replace build Dockerfile
 cat > Dockerfile << EOF
 FROM golang:1.13-alpine as builder
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
@@ -142,15 +146,17 @@ COPY --from=builder /micro .
 ENTRYPOINT ["tail",  "-f", "/etc/alpine-release"]
 EOF
 
+# build local docker image
 #GOPROXY=${go_proxy_url} GO111MODULE=on go mod vendor
-
 docker build --tag ${docker_temp_name}:${docker_temp_tag} .
 checkFuncBack "docker build --tag ${docker_temp_name}:${docker_temp_tag} ."
 
+# check hub.docker dist folder
 if [[ ! -d ${build_out_path} ]]; then
     mkdir -p ${build_out_path}
 fi
 
+# start dist hub.docker
 echo -e "# This dockerfile uses extends image https://hub.docker.com/sinlov/go-micro-cli
 # VERSION 1
 # Author: sinlov
@@ -169,13 +175,15 @@ pI "new tag ${build_version} Dockfile as =="
 cat ${build_out_path}/Dockerfile
 
 dockerRemoveContainSafe ${docker_temp_contain}
+
+# run image to coyp build used file
 docker create --name ${docker_temp_contain} ${docker_temp_name}:${docker_temp_tag}
 checkFuncBack "docker create --name ${docker_temp_contain} ${docker_temp_name}:${docker_temp_tag}"
 docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}
 checkFuncBack "docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}"
 
+# clean local container and images
 dockerRemoveContainSafe ${docker_temp_contain}
 docker rmi -f ${docker_temp_name}:${docker_temp_tag}
-
 (while :; do echo 'y'; sleep 3; done) | docker container prune
 (while :; do echo 'y'; sleep 3; done) | docker image prune
