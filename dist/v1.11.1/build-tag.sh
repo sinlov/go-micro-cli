@@ -35,27 +35,27 @@ pE(){
 }
 
 checkFuncBack(){
-  if [[ $? -ne 0 ]]; then
-    echo -e "\033[;31mRun [ $1 ] error exit code 1\033[0m"
-    exit 1
-  fi
+    if [[ $? -ne 0 ]]; then
+        echo -e "\033[;31mRun [ $1 ] error exit code 1\033[0m"
+        exit 1
+    fi
 }
 
 checkBinary(){
-  binary_checker=`which $1`
-  checkFuncBack "which $1"
-  if [[ ! -n "${binary_checker}" ]]; then
-    echo -e "\033[;31mCheck binary [ $1 ] error exit\033[0m"
-    exit 1
-#  else
-#    echo -e "\033[;32mCli [ $1 ] event check success\033[0m\n-> \033[;34m$1 at Path: ${evn_checker}\033[0m"
-  fi
+    binary_checker=`which $1`
+    checkFuncBack "which $1"
+    if [[ ! -n "${binary_checker}" ]]; then
+        echo -e "\033[;31mCheck binary [ $1 ] error exit\033[0m"
+        exit 1
+        #  else
+        #    echo -e "\033[;32mCli [ $1 ] event check success\033[0m\n-> \033[;34m$1 at Path: ${evn_checker}\033[0m"
+    fi
 }
 
 check_root(){
-  if [[ ${EUID} != 0 ]]; then
-    echo "no not root user"
-  fi
+    if [[ ${EUID} != 0 ]]; then
+        echo "no not root user"
+    fi
 }
 
 dockerIsHasContainByName(){
@@ -115,12 +115,12 @@ checkBinary docker
 
 # pull https://github.com/micro/micro with tag start
 if [[ -d "${build_source_root}" ]]; then
-  cd ${build_source_root}
-  git reset --hard HEAD
-  git pull
+    cd ${build_source_root}
+    git reset --hard HEAD
+    git pull
 else
-  git clone https://github.com/micro/micro.git ${build_source_root}
-  cd ${build_source_root}
+    git clone https://github.com/micro/micro.git ${build_source_root}
+    cd ${build_source_root}
 fi
 
 git checkout ${build_version}
@@ -145,6 +145,39 @@ RUN apk --no-cache add ca-certificates && \
 COPY --from=builder /micro .
 ENTRYPOINT ["tail",  "-f", "/etc/alpine-release"]
 EOF
+echo -e "
+NAME=micro
+IMAGE_NAME=microhq/\$(NAME)
+TAG=\$(shell git describe --abbrev=0 --tags)
+CGO_ENABLED=0
+
+all: build
+
+vendor:
+\tgo mod vendor
+
+build:
+\tGOPROXY=${go_proxy_url} go get
+\tGOPROXY=${go_proxy_url} go build -a -installsuffix cgo -ldflags '-w' -o \$(NAME) ./*.go
+
+docker:
+\tdocker build -t \$(IMAGE_NAME):\$(TAG) .
+\tdocker tag \$(IMAGE_NAME):\$(TAG) \$(IMAGE_NAME):latest
+\tdocker push \$(IMAGE_NAME):\$(TAG)
+\tdocker push \$(IMAGE_NAME):latest
+
+vet:
+\tgo vet ./...
+
+test: vet
+\tgo test -v ./...
+
+clean:
+\trm -rf ./micro
+
+.PHONY: build clean vet test docker
+" > Makefile
+
 
 # build local docker image
 #GOPROXY=${go_proxy_url} GO111MODULE=on go mod vendor
@@ -214,7 +247,58 @@ docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}
 checkFuncBack "docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}"
 
 # clean local container and images
-dockerRemoveContainSafe ${docker_temp_contain}
-docker rmi -f ${docker_temp_name}:${docker_temp_tag}
-(while :; do echo 'y'; sleep 3; done) | docker container prune
-(while :; do echo 'y'; sleep 3; done) | docker image prune
+read -t 7 -p "Are you sure to remove container? [y/n] " remove_container_input
+case $remove_container_input in
+    [yY]*)
+        dockerRemoveContainSafe ${docker_temp_contain}
+        (while :; do echo 'y'; sleep 3; done) | docker container prune
+        echo ""
+        echo "-> just remove all exit container!"
+    ;;
+    [nN]*)
+        pI "-> not remove container you can try as"
+        echo "docker rm ${docker_temp_contain}"
+        pI "to remove contain, but not full of contain"
+        pI "if want remove full just use"
+        echo "(while :; do echo 'y'; sleep 3; done) | docker container prune"
+        echo ""
+    ;;
+    *)
+        echo "-> out of time or unknow command remove container"
+        pI "remove container you can try as"
+        echo "docker rm ${docker_temp_contain}"
+        pI "to remove contain, but not full of contain"
+        pI "if want remove full just use"
+        echo "(while :; do echo 'y'; sleep 3; done) | docker container prune"
+        echo ""
+    ;;
+esac
+
+read -t 7 -p "Are you sure to remove image prune? [y/n] " remove_image_input
+case $remove_image_input in
+    [yY]*)
+        docker rmi -f ${docker_temp_name}:${docker_temp_tag}
+        (while :; do echo 'y'; sleep 3; done) | docker image prune
+        echo ""
+        echo "-> just remove all prune image!"
+    ;;
+    [nN]*)
+        pI "-> now not remove image you can try as"
+        echo "docker rmi -f ${docker_temp_name}:${docker_temp_tag}"
+        echo ""
+        pI "if want remove full just use"
+        echo "(while :; do echo 'y'; sleep 3; done) | docker image prune"
+        echo ""
+    ;;
+    *)
+        echo "-> out of time or unknow command remove image prune"
+        pI "remove image you can try as"
+        echo "docker rmi -f ${docker_temp_name}:${docker_temp_tag}"
+        echo ""
+        pI "if want remove full just use"
+        echo "(while :; do echo 'y'; sleep 3; done) | docker image prune"
+        echo ""
+    ;;
+esac
+echo "=> must check out build images !"
+exit 0

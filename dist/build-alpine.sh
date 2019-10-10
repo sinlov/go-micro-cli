@@ -154,7 +154,63 @@ docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}
 checkFuncBack "docker cp ${docker_temp_contain}:${docker_cp_from} ${docker_cp_to}"
 
 # clean local container and images
-dockerRemoveContainSafe ${docker_temp_contain}
-docker rmi -f ${docker_temp_name}:${docker_temp_tag}
-(while :; do echo 'y'; sleep 3; done) | docker container prune
-(while :; do echo 'y'; sleep 3; done) | docker image prune
+# dockerRemoveContainSafe ${docker_temp_contain}
+# docker rmi -f ${docker_temp_name}:${docker_temp_tag}
+# (while :; do echo 'y'; sleep 3; done) | docker container prune
+# (while :; do echo 'y'; sleep 3; done) | docker image prune
+# clean local container and images
+read -t 7 -p "Are you sure to remove container? [y/n] " remove_container_input
+case $remove_container_input in
+    [yY]*)
+        dockerRemoveContainSafe ${docker_temp_contain}
+        (while :; do echo 'y'; sleep 3; done) | docker container prune
+        echo ""
+        echo "-> just remove all exit container!"
+    ;;
+    [nN]*)
+        pI "-> not remove container you can try as"
+        echo "docker rm ${docker_temp_contain}"
+        pI "to remove contain, but not full of contain"
+        pI "if want remove full just use"
+        echo "(while :; do echo 'y'; sleep 3; done) | docker container prune"
+        echo ""
+    ;;
+    *)
+        echo "-> out of time or unknow command remove container"
+        pI "remove container you can try as"
+        echo "docker rm ${docker_temp_contain}"
+        pI "to remove contain, but not full of contain"
+        pI "if want remove full just use"
+        echo "(while :; do echo 'y'; sleep 3; done) | docker container prune"
+        echo ""
+    ;;
+esac
+
+read -t 7 -p "Are you sure to remove image prune? [y/n] " remove_image_input
+case $remove_image_input in
+    [yY]*)
+        docker rmi -f ${docker_temp_name}:${docker_temp_tag}
+        (while :; do echo 'y'; sleep 3; done) | docker image prune
+        echo ""
+        echo "-> just remove all prune image!"
+    ;;
+    [nN]*)
+        pI "-> now not remove image you can try as"
+        echo "docker rmi -f ${docker_temp_name}:${docker_temp_tag}"
+        echo ""
+        pI "if want remove full just use"
+        echo "(while :; do echo 'y'; sleep 3; done) | docker image prune"
+        echo ""
+    ;;
+    *)
+        echo "-> out of time or unknow command remove image prune"
+        pI "remove image you can try as"
+        echo "docker rmi -f ${docker_temp_name}:${docker_temp_tag}"
+        echo ""
+        pI "if want remove full just use"
+        echo "(while :; do echo 'y'; sleep 3; done) | docker image prune"
+        echo ""
+    ;;
+esac
+echo "=> must check out build images !"
+exit 0
