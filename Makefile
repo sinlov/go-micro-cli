@@ -8,6 +8,9 @@ ROOT_BUILD_PATH ?= ./build
 ROOT_LOG_PATH ?= ./log
 ROOT_DIST ?= ./out
 
+TEST_TAG_BUILD_IMAGE_NAME ?= micro/go-micro-cli
+TEST_TAG_BUILD_CONTAINER_NAME ?= test-micro-go-micro-cli
+
 all: buildLatestAlpine
 
 checkBuildPath:
@@ -36,6 +39,13 @@ buildLatestAlpine: checkBuildPath
 
 buildTag:
 	cd dist/$(ROOT_SWITCH_TAG) && bash build-tag.sh
+
+testTagBuild:
+	cd $(ROOT_SWITCH_TAG)/apline && docker build -t $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG) .
+	docker run --rm --name $(TEST_TAG_BUILD_CONTAINER_NAME) $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG) --help
+
+testRemoveTagBuild:
+	docker rmi -f $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG)
 
 help:
 	@echo "make all ~> fast build"
