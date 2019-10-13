@@ -2,7 +2,7 @@
 
 build_version=v1.11.1
 build_os=alpine
-build_out_path=../../${build_version}/${build_os}
+build_out_path=../../${build_os}
 
 build_source_root=../../build/micro
 go_proxy_url=https://goproxy.io/
@@ -11,7 +11,7 @@ docker_temp_contain=temp-go-micro-cli
 docker_temp_name=temp-micro/go-micro-cli
 docker_temp_tag=${build_version}
 docker_cp_from=/micro
-docker_cp_to=../../${build_version}/${build_os}
+docker_cp_to=../../${build_os}
 
 
 run_path=$(pwd)

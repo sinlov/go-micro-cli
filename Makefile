@@ -4,7 +4,8 @@ TOP_DIR := $(shell pwd)
 
 ROOT_SWITCH_TAG := v1.11.1
 
-ROOT_BUILD_PATH ?= ./build
+ROOT_BUILD_FOLDER ?= build
+ROOT_BUILD_PATH ?= ./${ROOT_BUILD_FOLDER}
 ROOT_LOG_PATH ?= ./log
 ROOT_DIST ?= ./out
 
@@ -31,20 +32,24 @@ cleanDist:
 dockerCleanImages:
 	(while :; do echo 'y'; sleep 3; done) | docker image prune
 
+dockerPruneAll:
+	(while :; do echo 'y'; sleep 3; done) | docker containerw prune
+	(while :; do echo 'y'; sleep 3; done) | docker image prune
+
 clean: cleanBuild cleanLog
 	@echo "~> clean finish"
 
 buildLatestAlpine: checkBuildPath
-	cd dist && bash build-alpine.sh
+	cd ${ROOT_BUILD_FOLDER} && bash build-alpine.sh
 
 buildTag:
-	cd dist/$(ROOT_SWITCH_TAG) && bash build-tag.sh
+	cd ${ROOT_BUILD_FOLDER}/$(ROOT_SWITCH_TAG) && bash build-tag.sh
 
-testTagBuild:
+dockerTagBuild:
 	cd $(ROOT_SWITCH_TAG)/alpine && docker build -t $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG) .
 	docker run --rm --name $(TEST_TAG_BUILD_CONTAINER_NAME) $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG) --help
 
-testRemoveTagBuild:
+dockerRemoveTagBuild:
 	docker rmi -f $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG)
 
 help:
