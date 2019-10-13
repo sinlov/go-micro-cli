@@ -35,7 +35,7 @@ dockerCleanImages:
 	(while :; do echo 'y'; sleep 3; done) | docker image prune
 
 dockerPruneAll:
-	(while :; do echo 'y'; sleep 3; done) | docker containerw prune
+	(while :; do echo 'y'; sleep 3; done) | docker container prune
 	(while :; do echo 'y'; sleep 3; done) | docker image prune
 
 clean: cleanBuild cleanLog
