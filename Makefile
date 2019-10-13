@@ -3,9 +3,11 @@
 TOP_DIR := $(shell pwd)
 
 ROOT_SWITCH_TAG := v1.11.1
+ROOT_BUILD_OS := alpine
 
 ROOT_BUILD_FOLDER ?= build
 ROOT_BUILD_PATH ?= ./${ROOT_BUILD_FOLDER}
+ROOT_SCRIPT_FOLDER ?= dist
 ROOT_LOG_PATH ?= ./log
 ROOT_DIST ?= ./out
 
@@ -40,17 +42,17 @@ clean: cleanBuild cleanLog
 	@echo "~> clean finish"
 
 buildLatestAlpine: checkBuildPath
-	cd ${ROOT_BUILD_FOLDER} && bash build-alpine.sh
+	cd ${ROOT_SCRIPT_FOLDER} && bash build-alpine.sh
 
 buildTag:
-	cd ${ROOT_BUILD_FOLDER}/$(ROOT_SWITCH_TAG) && bash build-tag.sh
+	cd ${ROOT_SCRIPT_FOLDER}/$(ROOT_SWITCH_TAG) && bash build-tag.sh
 
-dockerTagBuild:
-	cd $(ROOT_SWITCH_TAG)/alpine && docker build -t $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG) .
+dockerRemoveBuild:
+	-docker rmi -f $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG)
+
+dockerBuild:
+	cd ${ROOT_BUILD_OS} && docker build -t $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG) .
 	docker run --rm --name $(TEST_TAG_BUILD_CONTAINER_NAME) $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG) --help
-
-dockerRemoveTagBuild:
-	docker rmi -f $(TEST_TAG_BUILD_IMAGE_NAME):test-$(ROOT_SWITCH_TAG)
 
 help:
 	@echo "make all ~> fast build"
@@ -59,3 +61,7 @@ help:
 	@echo ""
 	@echo "make buildLatestAlpine ~> build latest alpine"
 	@echo "make buildTag ~> build tag as $(ROOT_SWITCH_TAG) alpine"
+	@echo ""
+	@echo "local test build use"
+	@echo "make dockerRemoveBuild ~> build latest alpine"
+	@echo "make dockerBuild ~> build latest alpine"
