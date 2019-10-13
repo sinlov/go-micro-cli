@@ -2,6 +2,7 @@
 
 build_version=v1.11.1
 build_os=alpine
+build_os_version=3.10
 build_out_path=../../${build_os}
 
 build_source_root=../../build/micro
