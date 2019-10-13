@@ -17,7 +17,7 @@ docker run --rm \
 - version v1.11.1
 
 ```sh
-$ sudo curl -s -L --fail https://raw.githubusercontent.com/sinlov/go-micro-cli/master/v1.11.1/alpine/run.sh -o /usr/local/bin/micro
+$ sudo curl -s -L --fail https://raw.githubusercontent.com/sinlov/go-micro-cli/master/dist/v1.11.1/run.sh -o /usr/local/bin/micro
 $ sudo chmod +x /usr/local/bin/micro
 ```
 

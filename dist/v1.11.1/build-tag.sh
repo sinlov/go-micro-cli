@@ -229,7 +229,7 @@ docker run --rm \\
 - version ${build_version}
 
 \`\`\`sh
-$ sudo curl -s -L --fail https://raw.githubusercontent.com/sinlov/go-micro-cli/master/${build_version}/alpine/run.sh -o /usr/local/bin/micro
+$ sudo curl -s -L --fail https://raw.githubusercontent.com/sinlov/go-micro-cli/master/dist/${build_version}/run.sh -o /usr/local/bin/micro
 $ sudo chmod +x /usr/local/bin/micro
 \`\`\`
 
