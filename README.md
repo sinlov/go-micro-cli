@@ -31,7 +31,7 @@ $ sudo chmod +x /usr/local/bin/micro
 | tag            | Dockerfile                              | document                              |
 | -------------- | --------------------------------------- | ------------------------------------- |
 | latest         | [latest Dockerfile](Dockerfile)         | [document](README.md)                 |
-| alpine-v1.11.1 | [Dockerfile](v1.11.1/alpine/Dockerfile) | [document](v1.11.1/alpine/README.md)  |
+| alpine-v1.11.1 | [Dockerfile](alpine/Dockerfile)         | [document](alpine/README.md)          |
 
 
 # build ideas
