@@ -2,7 +2,7 @@
 
 build_version=v1.11.1
 build_os=alpine
-build_out_path=../../${build_os}
+build_out_path=../../${build_os}/${build_os}
 
 build_source_root=../../build/micro
 go_proxy_url=https://goproxy.io/
