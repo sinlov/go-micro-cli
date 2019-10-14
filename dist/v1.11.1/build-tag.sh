@@ -118,6 +118,7 @@ checkBinary docker
 if [[ -d "${build_source_root}" ]]; then
     cd ${build_source_root}
     git reset --hard HEAD
+    git checkout master
     git pull
 else
     git clone https://github.com/micro/micro.git ${build_source_root}
