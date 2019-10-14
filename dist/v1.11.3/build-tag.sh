@@ -120,6 +120,7 @@ if [[ -d "${build_source_root}" ]]; then
     git reset --hard HEAD
     git checkout master
     git pull
+    git pull --tags
 else
     git clone https://github.com/micro/micro.git ${build_source_root}
     cd ${build_source_root}
