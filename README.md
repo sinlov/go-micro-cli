@@ -31,6 +31,7 @@ $ sudo chmod +x /usr/local/bin/micro
 | tag            | Dockerfile                              | document                              |
 | -------------- | --------------------------------------- | ------------------------------------- |
 | latest         | [latest Dockerfile](Dockerfile)         | [document](README.md)                 |
+| alpine-v1.15.0 | [Dockerfile](https://github.com/sinlov/go-micro-cli/blob/alpine-v1.15.0/alpine/Dockerfile) | [document](https://github.com/sinlov/go-micro-cli/blob/alpine-v1.15.0/alpine/README.md) |
 | alpine-v1.14.0 | [Dockerfile](https://github.com/sinlov/go-micro-cli/blob/alpine-v1.14.0/alpine/Dockerfile) | [document](https://github.com/sinlov/go-micro-cli/blob/alpine-v1.14.0/alpine/README.md) |
 | alpine-v1.13.2 | [Dockerfile](https://github.com/sinlov/go-micro-cli/blob/alpine-v1.13.2/alpine/Dockerfile) | [document](https://github.com/sinlov/go-micro-cli/blob/alpine-v1.13.2/alpine/README.md) |
 | alpine-v1.13.1 | [Dockerfile](https://github.com/sinlov/go-micro-cli/blob/alpine-v1.13.1/alpine/Dockerfile) | [document](https://github.com/sinlov/go-micro-cli/blob/alpine-v1.13.1/alpine/README.md) |
