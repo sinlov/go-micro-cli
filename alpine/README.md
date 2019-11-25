@@ -8,16 +8,16 @@
 ```sh
 docker run --rm \
   --name micro-alpine \
-  -it sinlov/go-micro-cli:v1.15.0 \
+  -it sinlov/go-micro-cli:v1.15.1 \
   --help
 ```
 
 # use as local cli
 
-- version v1.15.0
+- version v1.15.1
 
 ```sh
-$ sudo curl -s -L --fail https://raw.githubusercontent.com/sinlov/go-micro-cli/master/dist/v1.15.0/run.sh -o /usr/local/bin/micro
+$ sudo curl -s -L --fail https://raw.githubusercontent.com/sinlov/go-micro-cli/master/dist/v1.15.1/run.sh -o /usr/local/bin/micro
 $ sudo chmod +x /usr/local/bin/micro
 ```
 
