@@ -2,7 +2,7 @@
 
 TOP_DIR := $(shell pwd)
 
-ROOT_SWITCH_TAG := v1.13.1
+ROOT_SWITCH_TAG := v1.13.2
 ROOT_BUILD_OS := alpine
 
 ROOT_BUILD_FOLDER ?= build
